@@ -33,7 +33,7 @@ RUN apt-get update && apt-get install -y \
   tesseract-ocr-eng \
   tesseract-ocr-fra \
   tesseract-ocr-deu \
-  tesseract-ocr-eng
+  tesseract-ocr-ita
 
 RUN wget -qO- https://dl.google.com/go/go1.13.15.linux-amd64.tar.gz | tar xvz -C /usr/local
 ENV PATH $PATH:/usr/local/go/bin
