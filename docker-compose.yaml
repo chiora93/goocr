@@ -1,6 +1,7 @@
 
 services:
   goocr:
+    image: chiora93/goocr
     privileged: true
     environment:
       - UPLOADED_FILES_DIR=/tmp/pdf-cache

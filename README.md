@@ -28,11 +28,11 @@ http://localhost:8080/web/img
 
 ### 3.1 API Endpoints for PDF submission
 ```
-http://localhost:8080/api/upload/pdf
+http://localhost:8080/api/v1/documents/pdf/ocr-scan
 ```
 ### 3.2 API endpoint for Image submission
 ```
-http://localhost:8080/api/upload/img
+http://localhost:8080/api/v1/documents/img/ocr-scan
 ```
 
 ## 4. Frameworks

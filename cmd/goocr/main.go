@@ -22,8 +22,8 @@ func main() {
 	h := handlers.NewHandlers(os.Getenv("UPLOADED_FILES_DIR"))
 
 	router := http.NewServeMux()
-	router.HandleFunc("/api/upload/pdf", h.UploadPDF)
-	router.HandleFunc("/api/upload/img", h.UploadImage)
+	router.HandleFunc("/api/v1/documents/pdf/ocr-scan", h.ScanPDF)
+	router.HandleFunc("/api/v1/documents/img/ocr-scan", h.ScanImage)
 	router.HandleFunc("/web/pdf", h.GuiUploadPDF)
 	router.HandleFunc("/web/img", h.GuiUploadImage)
 

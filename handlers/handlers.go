@@ -41,13 +41,13 @@ func (h *Handlers) GuiUploadPDF(w http.ResponseWriter, req *http.Request) {
 
 	microPage := `
 		<html>
-			<title>Hackathon Tesseract Web Service</title>
+			<title>GOOCR - OCR microservice demo</title>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 			<body>
-				<h2>Hackathon Tesseract Web Service</h2>
+				<h2>GOOCR - OCR microservice demo</h2>
 				<h4>PDF File Submission</h4>
 				</pre>	
-				<form action="/api/upload/pdf" method="post" enctype="multipart/form-data">
+				<form action="/api/v1/documents/pdf/ocr-scan" method="post" enctype="multipart/form-data">
 					<input type="file" name="the_file" />
 					<input type="submit" value="Submit PDF" />
 				</form>
@@ -64,13 +64,13 @@ func (h *Handlers) GuiUploadImage(w http.ResponseWriter, req *http.Request) {
 
 	microPage := `
 		<html>
-			<title>Hackathon Tesseract Web Service</title>
+			<title>GOOCR - OCR microservice demo</title>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 			<body>
-				<h2>Hackathon Tesseract Web Service</h2>
+				<h2>GOOCR - OCR microservice demo</h2>
 				<h4>JPG Image File Submission</h4>
 				</pre>
-				<form action="/api/upload/img" method="post" enctype="multipart/form-data">
+				<form action="/api/v1/documents/img/ocr-scan" method="post" enctype="multipart/form-data">
 					<input type="file" name="the_file" />
 					<input type="submit" value="Submit JPG" />
 				</form>
@@ -82,7 +82,7 @@ func (h *Handlers) GuiUploadImage(w http.ResponseWriter, req *http.Request) {
 	_, _ = fmt.Fprintf(w, microPage)
 }
 
-func (h *Handlers) UploadImage(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) ScanImage(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
@@ -181,7 +181,7 @@ func (h *Handlers) UploadImage(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (h *Handlers) UploadPDF(w http.ResponseWriter, r *http.Request) {
+func (h *Handlers) ScanPDF(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, http.StatusText(http.StatusMethodNotAllowed), http.StatusMethodNotAllowed)
 		return
