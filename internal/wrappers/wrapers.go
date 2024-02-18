@@ -14,8 +14,8 @@ import (
 	"github.com/otiai10/gosseract"
 )
 
-// ExtracPdfToImagesFromPDF extracts Images from the PDF file and output an image per page.
-func ExtracPdfToImagesFromPDF(pdfFullPath, outputDirectory string) error {
+// ExtractPdfToImagesFromPDF extracts Images from the PDF file and output an image per page.
+func ExtractPdfToImagesFromPDF(pdfFullPath, outputDirectory string) error {
 	log.WithFields(log.Fields{
 		"pdfFullPath":     pdfFullPath,
 		"outputDirectory": outputDirectory,

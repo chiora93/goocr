@@ -217,7 +217,6 @@ func (h *Handlers) ScanPDF(w http.ResponseWriter, r *http.Request) {
 			var outfile *os.File
 
 			// Save the file into the docker container disk,
-			// Save the file into the docker container disk,
 			generatedUUID, err := uuid.NewV4()
 			if err != nil {
 				log.WithError(err).Error("Error creating UUID")
@@ -262,7 +261,7 @@ func (h *Handlers) ScanPDF(w http.ResponseWriter, r *http.Request) {
 			}
 
 			pdfFilePath := path.Join(tempPath, schema.DocumentFileName)
-			if err := wrappers.ExtracPdfToImagesFromPDF(pdfFilePath, imagesOutputPath); err != nil {
+			if err := wrappers.ExtractPdfToImagesFromPDF(pdfFilePath, imagesOutputPath); err != nil {
 				log.WithField("pdfFilePath", pdfFilePath).WithError(err).Error("Unable to extract images from PDF")
 				http.Error(w, "Unable to process request", http.StatusInternalServerError)
 				return
@@ -307,7 +306,7 @@ func (h *Handlers) processParalellOCR(imagesDirectoryPath string, imageExtension
 			"imageExtension":      imageExtension,
 			"textOutPutDirectory": textOutPutDirectory,
 		})
-		go wrappers.ExtractPlainTextFromImage(imagePath, "eng", textOutPutDirectory, f.Name(), wg, h.throttle)
+		go wrappers.ExtractPlainTextFromImage(imagePath, "ita", textOutPutDirectory, f.Name(), wg, h.throttle)
 
 		numberFiles++
 	}
