@@ -1,0 +1,12 @@
+
+services:
+  goocr:
+    privileged: true
+    environment:
+      - UPLOADED_FILES_DIR='/tmp/pdf-cache'
+    build:
+      context: .
+    ports:
+      - 8777:80
+    volumes:
+      - /tmp/pdf-cache:/tmp/pdf-cache
