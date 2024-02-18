@@ -3,7 +3,7 @@ services:
   goocr:
     privileged: true
     environment:
-      - UPLOADED_FILES_DIR='/tmp/pdf-cache'
+      - UPLOADED_FILES_DIR=/tmp/pdf-cache
     build:
       context: .
     ports:
