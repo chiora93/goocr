@@ -13,14 +13,7 @@ purposes.
 ### 1. How to build and run:
 
 ```
-docker build -t ocr-tesseract .
-```
-
-```
-docker run --privileged=true -d -t -i \
-    -p 8080:80 \
-    -e UPLOADED_FILES_DIR='/tmp/pdf-cache' \
-    -v /tmp/pdf-cache:/tmp/pdf-cache ocr-tesseract
+docker compose up --build
 ```
 
 ### 2. Main Web Views
