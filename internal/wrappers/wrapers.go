@@ -3,13 +3,12 @@ package wrappers
 import (
 	"bufio"
 	"fmt"
+	"github.com/chiora93/goocr/internal/schema"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"sync"
-
-	"github.com/chiora93/goocr/schema"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/otiai10/gosseract"

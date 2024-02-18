@@ -3,6 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/chiora93/goocr/internal/schema"
+	"github.com/chiora93/goocr/internal/wrappers"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -12,9 +14,6 @@ import (
 	"path/filepath"
 	"strings"
 	"sync"
-
-	"github.com/chiora93/goocr/schema"
-	"github.com/chiora93/goocr/wrappers"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/nu7hatch/gouuid"

@@ -1,10 +1,9 @@
 package main
 
 import (
+	"github.com/chiora93/goocr/internal/handlers"
 	"net/http"
 	"os"
-
-	"github.com/chiora93/goocr/handlers"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/rs/cors"
