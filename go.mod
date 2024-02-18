@@ -1,4 +1,4 @@
-module github.com/oscarpfernandez/go-tesseract-ocr-service
+module github.com/chiora93/goocr
 
 go 1.13
 

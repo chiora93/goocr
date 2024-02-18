@@ -13,8 +13,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/oscarpfernandez/go-tesseract-ocr-service/schema"
-	"github.com/oscarpfernandez/go-tesseract-ocr-service/wrappers"
+	"github.com/chiora93/goocr/schema"
+	"github.com/chiora93/goocr/wrappers"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/nu7hatch/gouuid"

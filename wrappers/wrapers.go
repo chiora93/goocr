@@ -9,13 +9,13 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/oscarpfernandez/go-tesseract-ocr-service/schema"
+	"github.com/chiora93/goocr/schema"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/otiai10/gosseract"
 )
 
-//ExtracPdfToImagesFromPDF extracts Images from the PDF file and output an image per page.
+// ExtracPdfToImagesFromPDF extracts Images from the PDF file and output an image per page.
 func ExtracPdfToImagesFromPDF(pdfFullPath, outputDirectory string) error {
 	log.WithFields(log.Fields{
 		"pdfFullPath":     pdfFullPath,
@@ -58,7 +58,7 @@ func ExtracPdfToImagesFromPDF(pdfFullPath, outputDirectory string) error {
 	return nil
 }
 
-//ExtractPlainTextFromImage given a images file, Tesseract OCR generates a plain text file with the detected text.
+// ExtractPlainTextFromImage given a images file, Tesseract OCR generates a plain text file with the detected text.
 func ExtractPlainTextFromImage(imageFullPath, languages, outputDirectory, textFilePrefix string, wg *sync.WaitGroup, throttle chan int) {
 	defer wg.Done()
 

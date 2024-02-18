@@ -1,4 +1,4 @@
-go-tesseract-ocr-service
+goocr - GO Ocr service
 ========================
 
 This Golang based project provides a microservice that offers a REST API and a Web
@@ -47,5 +47,5 @@ This projects uses the following SDK's:
 - [Tesseract OCR](http://github.com/tesseract-ocr) : OCR Engine
 - [GhostScript](http://www.ghostscript.com): PDF interpreter used to convert PDF to a set of images (per page)
 
-(C) 2019
+(C) 2024 Simone Chiorazzo
 

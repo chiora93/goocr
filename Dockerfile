@@ -4,7 +4,7 @@
 
 FROM ubuntu:18.04
 
-MAINTAINER oscar.pl.fernandez@gmail.com
+MAINTAINER chiora93@gmail.com
 
 # Install essential packages needed for compilatiion / execution of Tesseract.
 RUN apt-get update && apt-get install -y \
@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
   tesseract-ocr-deu \
   tesseract-ocr-eng
 
-RUN wget -qO- https://dl.google.com/go/go1.13.1.linux-amd64.tar.gz | tar xvz -C /usr/local
+RUN wget -qO- https://dl.google.com/go/go1.13.15.linux-amd64.tar.gz | tar xvz -C /usr/local
 ENV PATH $PATH:/usr/local/go/bin
 
 # Set GOPATH
@@ -46,12 +46,12 @@ ENV PATH /go/bin:$PATH
 ENV TESSDATA_PREFIX /usr/share/tesseract-ocr/4.00/tessdata
 
 # Copy code to image
-COPY . /go/src/github.com/oscarpfernandez/go-tesseract-ocr-service
+COPY . /go/src/github.com/chiora93/goocr
 
-WORKDIR /go/src/github.com/oscarpfernandez/go-tesseract-ocr-service
+WORKDIR /go/src/github.com/chiora93/goocr
 
-RUN go install -v -a github.com/oscarpfernandez/go-tesseract-ocr-service/cmd/ocr-service/...
+RUN go install -v -a github.com/chiora93/goocr/cmd/goocr/...
 
-CMD /go/bin/ocr-service
+CMD /go/bin/goocr
 
 EXPOSE 80

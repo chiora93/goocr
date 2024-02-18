@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/oscarpfernandez/go-tesseract-ocr-service/handlers"
+	"github.com/chiora93/goocr/handlers"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/rs/cors"
@@ -17,7 +17,7 @@ func init() {
 }
 
 func main() {
-	logrus.Print("Tesseract Rest Service")
+	logrus.Info("GOOCR - Tesseract Rest Service Starting...")
 
 	h := handlers.NewHandlers(os.Getenv("UPLOADED_FILES_DIR"))
 
