@@ -57,7 +57,7 @@ func ExtractPdfToImagesFromPDF(pdfFullPath, outputDirectory string) error {
 	return nil
 }
 
-// ExtractPlainTextFromImage given a images file, Tesseract OCR generates a plain text file with the detected text.
+// ExtractPlainTextFromImage given an image file, Tesseract OCR generates a plain text file with the detected text.
 func ExtractPlainTextFromImage(imageFullPath, languages, outputDirectory, textFilePrefix string, wg *sync.WaitGroup, throttle chan int) {
 	defer wg.Done()
 
@@ -72,7 +72,12 @@ func ExtractPlainTextFromImage(imageFullPath, languages, outputDirectory, textFi
 		log.WithError(err).Error("Error creating text file")
 		return
 	}
-	defer outfile.Close()
+	defer func(outfile *os.File) {
+		err := outfile.Close()
+		if err != nil {
+			log.WithError(err).Error("Error closing text file")
+		}
+	}(outfile)
 
 	log.WithFields(log.Fields{
 		"imageFullPath":   imageFullPath,
@@ -82,7 +87,11 @@ func ExtractPlainTextFromImage(imageFullPath, languages, outputDirectory, textFi
 	}).Info("Processed OCR Tesseract Instance")
 
 	sanitizedTxt := strings.Replace(outText, "\n", " ", -1)
-	outfile.WriteString(sanitizedTxt)
+	_, err = outfile.WriteString(sanitizedTxt)
+	if err != nil {
+		log.WithError(err).Error("Error writing on output file")
+		return
+	}
 
 	<-throttle
 }
