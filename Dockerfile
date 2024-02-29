@@ -2,7 +2,7 @@
 # Tesseract Hackathon Docker Image
 #
 
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 MAINTAINER chiora93@gmail.com
 
@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
   libpango1.0-0 \
   libpango1.0-dev \
   icu-devtools \
-  python \
-  python-tornado \
+  python3 \
+  python3-tornado \
   wget \
   zlib1g-dev \
   git \
@@ -35,7 +35,7 @@ RUN apt-get update && apt-get install -y \
   tesseract-ocr-deu \
   tesseract-ocr-ita
 
-RUN wget -qO- https://dl.google.com/go/go1.13.15.linux-amd64.tar.gz | tar xvz -C /usr/local
+RUN wget -qO- https://dl.google.com/go/go1.21.6.linux-amd64.tar.gz | tar xvz -C /usr/local
 ENV PATH $PATH:/usr/local/go/bin
 
 # Set GOPATH
