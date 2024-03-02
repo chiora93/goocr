@@ -6,7 +6,6 @@ import (
 	"github.com/chiora93/goocr/internal/schema"
 	"github.com/chiora93/goocr/internal/wrappers"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"os"
@@ -20,7 +19,7 @@ import (
 )
 
 const (
-	NUMBER_PARALELL_ROUTINES = 4
+	NumberParallelRoutines = 4
 )
 
 type Handlers struct {
@@ -30,12 +29,12 @@ type Handlers struct {
 
 func NewHandlers(uploadDir string) *Handlers {
 	return &Handlers{
-		throttle:  make(chan int, NUMBER_PARALELL_ROUTINES),
+		throttle:  make(chan int, NumberParallelRoutines),
 		uploadDir: uploadDir,
 	}
 }
 
-func (h *Handlers) GuiUploadPDF(w http.ResponseWriter, req *http.Request) {
+func (h *Handlers) GuiUploadPDF(w http.ResponseWriter, _ *http.Request) {
 	log.Info("Request to handlers image service via GUI")
 
 	microPage := `
@@ -58,7 +57,7 @@ func (h *Handlers) GuiUploadPDF(w http.ResponseWriter, req *http.Request) {
 	_, _ = fmt.Fprintf(w, microPage)
 }
 
-func (h *Handlers) GuiUploadImage(w http.ResponseWriter, req *http.Request) {
+func (h *Handlers) GuiUploadImage(w http.ResponseWriter, _ *http.Request) {
 	log.Info("Request to handlers image service via GUI")
 
 	microPage := `
@@ -147,7 +146,12 @@ func (h *Handlers) ScanImage(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Unable to process request", http.StatusInternalServerError)
 				return
 			}
-			defer outfile.Close()
+			defer func(outfile *os.File) {
+				err := outfile.Close()
+				if err != nil {
+					log.WithError(err).Error("Failed to close file")
+				}
+			}(outfile)
 
 			// 32K buffer copy
 			if _, err = io.Copy(outfile, infile); err != nil {
@@ -156,7 +160,7 @@ func (h *Handlers) ScanImage(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 
-			log.WithField("MaxConcurrency", NUMBER_PARALELL_ROUTINES).Info("Launching main Tesseract text extraction worker")
+			log.WithField("MaxConcurrency", NumberParallelRoutines).Info("Launching main Tesseract text extraction worker")
 			txtsOutputPath = path.Join(tempPath, schema.TextFolderName)
 			if err := os.MkdirAll(txtsOutputPath, os.ModePerm); err != nil {
 				log.WithError(err).WithFields(log.Fields{
@@ -243,7 +247,12 @@ func (h *Handlers) ScanPDF(w http.ResponseWriter, r *http.Request) {
 				http.Error(w, "Unable to process request", http.StatusInternalServerError)
 				return
 			}
-			defer outfile.Close()
+			defer func(outfile *os.File) {
+				err := outfile.Close()
+				if err != nil {
+					log.WithError(err).Error("Error closing file")
+				}
+			}(outfile)
 
 			// 32K buffer copy
 			if _, err = io.Copy(outfile, infile); nil != err {
@@ -268,7 +277,7 @@ func (h *Handlers) ScanPDF(w http.ResponseWriter, r *http.Request) {
 			}
 
 			var wg sync.WaitGroup
-			log.WithField("MaxConcurrency", NUMBER_PARALELL_ROUTINES).Info("Launching main Tesseract text extraction worker")
+			log.WithField("MaxConcurrency", NumberParallelRoutines).Info("Launching main Tesseract text extraction worker")
 			txtsOutputPath = path.Join(tempPath, schema.TextFolderName)
 			if err := os.MkdirAll(txtsOutputPath, os.ModePerm); err != nil {
 				log.WithError(err).Error("Error creating texts output directory")
@@ -290,7 +299,7 @@ func (h *Handlers) ScanPDF(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) processParalellOCR(imagesDirectoryPath string, imageExtension string, textOutPutDirectory string, wg *sync.WaitGroup) int {
-	imageFilesList, _ := ioutil.ReadDir(imagesDirectoryPath)
+	imageFilesList, _ := os.ReadDir(imagesDirectoryPath)
 
 	numberFiles := 0
 
@@ -316,7 +325,7 @@ func (h *Handlers) processParalellOCR(imagesDirectoryPath string, imageExtension
 }
 
 func (h *Handlers) generatePageDetails(textsDirectory string) []schema.PageDetails {
-	txtsFilesList, _ := ioutil.ReadDir(textsDirectory)
+	txtsFilesList, _ := os.ReadDir(textsDirectory)
 
 	pages := make([]schema.PageDetails, len(txtsFilesList))
 
@@ -324,7 +333,7 @@ func (h *Handlers) generatePageDetails(textsDirectory string) []schema.PageDetai
 
 	for _, txt := range txtsFilesList {
 		txtPath := path.Join(textsDirectory, txt.Name())
-		data, err := ioutil.ReadFile(txtPath)
+		data, err := os.ReadFile(txtPath)
 
 		if err != nil {
 			log.WithError(err).Error("Cannot read txt file")
@@ -341,8 +350,8 @@ func (h *Handlers) generatePageDetails(textsDirectory string) []schema.PageDetai
 	return pages
 }
 
-func (h *Handlers) validateInput(w http.ResponseWriter, req *http.Request, submission *schema.SubmissionDetails) bool {
-	// Need to call ParseMultipartForm first so we can check if a file is contained
+func (h *Handlers) validateInput(_ http.ResponseWriter, req *http.Request, _ *schema.SubmissionDetails) bool {
+	// Need to call ParseMultipartForm first, so we can check if a file is contained
 	// parameter for max memory taken from https://golang.org/src/net/http/request.go
 	// Note that this is 32mb, and is probably why 40mb files are failing
 	_ = req.ParseMultipartForm(32 << 20)
