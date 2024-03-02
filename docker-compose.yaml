@@ -7,6 +7,9 @@ services:
       - UPLOADED_FILES_DIR=/tmp/pdf-cache
     build:
       context: .
+      args:
+        - TARGETOS=linux
+        - TARGETARCH=amd64
     ports:
       - 8777:80
     volumes:
