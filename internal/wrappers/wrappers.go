@@ -20,14 +20,10 @@ func ExtractPdfToImagesFromPDF(pdfFullPath, outputDirectory string) error {
 		"pdfFullPath":     pdfFullPath,
 		"outputDirectory": outputDirectory,
 	}).Info("Extracting Images from PDF via Ghostscript")
-
-	err := os.Chdir(outputDirectory)
-	if err != nil {
-		log.WithField("basePath", pdfFullPath).WithError(err).Error("Chdir dir failed")
-	}
-
-	cmdArgs := []string{"-dNOPAUSE", "-dBATCH", "-sDEVICE=jpeg", "-r300", "-sOutputFile=p%03d.jpg", pdfFullPath}
-
+	pwd, err := os.Getwd()
+	log.Info("Starting `gs` command from working dir: ", pwd)
+	cmdArgs := []string{"-dNOPAUSE", "-dBATCH", "-sDEVICE=jpeg", "-r300", "-sOutputFile=" + outputDirectory + "/p%03d.jpg", pdfFullPath}
+	log.Info("Starting command: gs ", strings.Join(cmdArgs, " "))
 	cmd := exec.Command("gs", cmdArgs...)
 	cmdReader, err := cmd.StdoutPipe()
 	if err != nil {
